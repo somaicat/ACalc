@@ -89,17 +89,32 @@ namespace ACalc {
         if (!TokenMethods.IsValidChar(c) && c != ' ') throw new TokenizationException("Encountered invalid character");
         if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
         { 
-          OperatorToken token = new OperatorToken(type);
-          tokenList.Add(token);
+//          OperatorToken token = new OperatorToken(type);
+          tokenList.Add(new OperatorToken(type));
           continue;
         }
         
-//        int num = (int) Char.GetNumericValud(c);
+        int num = (int) TokenMethods.GetNumber(c);
+//        NumberToken token = new NumberToken(num);
+        tokenList.Add(new NumberToken(num));
         
+      }
+    Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
+
+    return tokenList;
+//    throw new TokenizationException("Method not implemented yet");
     }
-    Console.WriteLine("{0}", tokenList);
-    throw new TokenizationException("Method not implemented yet");
+
+/*    public override string ToString() 
+    {
+      if (this is NumberToken != null)
+      return string.Format("TKN: {0} {1}", this,(this as NumberToken).Number);
+      else if (this is OperatorToken != null)
+      return string.Format("TKN: {0} {1}", this,(this as OperatorToken).Operator);
+      
+      return "";
     }
+*/
   }
 
   public class NumberToken : Token {
