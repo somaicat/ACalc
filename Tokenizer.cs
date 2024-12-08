@@ -92,7 +92,7 @@ namespace ACalc {
       OperatorType type;
       int number=0;
       bool numInProgress=false;
-
+      bool numNegate = false;
       Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
 
       foreach (char c in str) {
@@ -100,10 +100,16 @@ namespace ACalc {
 
         if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
         { 
+          if (type == OperatorType.Subtract && !numInProgress) { // number is negative
+            numNegate = !numNegate;
+            continue;
+          }
           if (numInProgress) { // Unfinished number token
+            if (numNegate) number = -number;
             tokenList.Add(new NumberToken(number));
             number = 0;
             numInProgress=false;
+            numNegate=false;
           }
           tokenList.Add(new OperatorToken(type));
           continue;
@@ -116,9 +122,10 @@ namespace ACalc {
         }
       }
 
-     if (numInProgress) // We have an outstanding number token
+     if (numInProgress) { // We have an outstanding number token
+       if (numNegate) number = -number;
        tokenList.Add(new NumberToken(number));
-
+     }
     Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
 
     return tokenList;
