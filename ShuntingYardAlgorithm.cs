@@ -1,0 +1,6 @@
+namespace ACalc {
+
+  class ShuntingYardAlgorithm {
+  }
+}
+
