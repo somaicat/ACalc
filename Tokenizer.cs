@@ -63,13 +63,13 @@ namespace ACalc {
     public static int GetPrecedence(this OperatorType type) {
       switch(type) 
       {
-        case OperatorType.OpenParenthesis: return 0;
-        case OperatorType.CloseParenthesis: return 0;
-        case OperatorType.Exponent: return 1;
-        case OperatorType.Multiply: return 2;
-        case OperatorType.Divide: return 2;
-        case OperatorType.Add: return 3;
-        case OperatorType.Subtract: return 3;
+        case OperatorType.OpenParenthesis: return 3;
+        case OperatorType.CloseParenthesis: return 3;
+        case OperatorType.Exponent: return 2;
+        case OperatorType.Multiply: return 1;
+        case OperatorType.Divide: return 1;
+        case OperatorType.Add: return 0;
+        case OperatorType.Subtract: return 0;
       }
       return -1;
     }
@@ -159,6 +159,9 @@ namespace ACalc {
     {
       this.Operator = type; 
       this.Type = TokenType.Operator;
+    }
+    public int GetPrecedence() {
+      return this.Operator.GetPrecedence();
     }
   }
 
