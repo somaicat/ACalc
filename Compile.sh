@@ -1,1 +1,1 @@
-mono-csc ./Program.cs ./ShuntingYardAlgorithm.cs ./RPLEvaluator.cs ./Tokenizer.cs
+mono-csc -debug ./Program.cs ./ShuntingYardAlgorithm.cs ./RPLEvaluator.cs ./Tokenizer.cs

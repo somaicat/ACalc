@@ -8,31 +8,47 @@ namespace ACalc {
       Stack<OperatorToken> stack = new Stack<OperatorToken>();
 
       foreach (Token token in tokenStream) {
+
+          System.Console.Write("Stack: ");
+	  foreach (OperatorToken to in stack) {System.Console.Write("{0} ", to.Operator);}
+	  System.Console.Write("\nOutput: ");
+	  foreach (Token lo in output) {
+	    if (lo is OperatorToken)
+	    System.Console.Write("{0} ", ((OperatorToken)lo).Operator);
+	    else 
+	    System.Console.Write("{0} ", ((NumberToken)lo).Number);
+	  }
+	  System.Console.Write("\n\n");
+
+
         if (token is NumberToken) {
           output.Add(token);
-          System.Console.WriteLine("Added to output {0}", ((NumberToken)token).Number);
+        //  System.Console.WriteLine("Added to output {0}", ((NumberToken)token).Number);
         }
         else if (token is OperatorToken) {
-          System.Console.WriteLine("Working on {0}", ((OperatorToken)token).Operator);
-          OperatorToken top = null;
+          //System.Console.WriteLine("Working on {0}", ((OperatorToken)token).Operator);
+                  OperatorToken top = null;
           OperatorToken opToken = token as OperatorToken;
           OperatorToken tmpOp = null;
           if (stack.Count > 0) top = stack.Peek();
           switch(opToken.Operator) {
             case OperatorType.OpenParenthesis: stack.Push(opToken); continue;
             case OperatorType.CloseParenthesis: 
-              while(stack.Count > 0 && stack.Peek().Operator != OperatorType.OpenParenthesis)
+              while(stack.Count > 0) 
               {
+	
+		if (stack.Peek().Operator == OperatorType.OpenParenthesis) { stack.Pop(); continue; } 
                 output.Add(stack.Pop());
               }
-              if (stack.Count > 0) stack.Pop();
+            //  if (stack.Count > 0) {stack.Pop();
+	     // System.Console.WriteLine("PopedP {0}",stack.Count);}
 //              if (stack.Count > 0 && stack.Peek().Operator == OperatorType.OpenParenthesis) stack.Pop();
 // insert check for not finding an open parenthesis 
               continue;
           
             default:
 	    
-	     while (top != null && top.GetPrecedence() > opToken.GetPrecedence()) {
+	     while (top != null && stack.Count > 0 && top.GetPrecedence() > opToken.GetPrecedence()) {
                output.Add(stack.Pop());
 	       if (stack.Count > 0) top = stack.Peek();
 	     }
