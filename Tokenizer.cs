@@ -34,6 +34,29 @@ namespace ACalc {
       }
     }
 
+    public static int GetNumber(char c) { // Yes I know .net provides methods much like this
+      switch (c)
+      {
+        case '0' : return 0;
+        case '1' : return 1;
+        case '2' : return 2;
+        case '3' : return 3;
+        case '4' : return 4;
+        case '5' : return 5;
+        case '6' : return 6;
+        case '7' : return 7;
+        case '8' : return 8;
+        case '9' : return 9;
+        default : return -1;
+      }
+    }
+
+    public static bool IsValidChar(char c) {
+      if (GetOperator(c) == OperatorType.Invalid && GetNumber(c) == -1) // It's a valid op or number, true, else false
+        return false;
+      else return true;
+    }
+
     public static int GetPrecedence(this OperatorType type) {
       switch(type) 
       {
@@ -60,8 +83,10 @@ namespace ACalc {
     public static IEnumerable<Token> Tokenize(string str) {
       List<Token> tokenList = new List<Token>();
       OperatorType type;
-
+      int number=0;
+      Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
       foreach (char c in str) {
+        if (!TokenMethods.IsValidChar(c) && c != ' ') throw new TokenizationException("Encountered invalid character");
         if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
         { 
           OperatorToken token = new OperatorToken(type);
@@ -69,8 +94,10 @@ namespace ACalc {
           continue;
         }
         
-//        int num = 
-     }
+//        int num = (int) Char.GetNumericValud(c);
+        
+    }
+    Console.WriteLine("{0}", tokenList);
     throw new TokenizationException("Method not implemented yet");
     }
   }
