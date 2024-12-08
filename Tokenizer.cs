@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 
 namespace ACalc {
+
   public enum TokenType {
     Number,
     Operator,
-    Unknown
+    Invalid
   }
 
   public enum OperatorType {
@@ -51,10 +52,12 @@ namespace ACalc {
       }
     }
 
-    public static bool IsValidChar(char c) {
-      if (GetOperator(c) == OperatorType.Invalid && GetNumber(c) == -1) // It's a valid op or number, true, else false
-        return false;
-      else return true;
+    public static TokenType CharTokenType(char c) {
+      if (GetOperator(c) != OperatorType.Invalid)
+        return TokenType.Operator;
+      if (GetNumber(c) != -1)
+        return TokenType.Number;
+      return TokenType.Invalid;
     }
 
     public static int GetPrecedence(this OperatorType type) {
@@ -80,25 +83,42 @@ namespace ACalc {
   
   public abstract class Token {
     public TokenType Type {get;set;}
+    private uint AddNumber(uint existing, uint num) {
+      return existing * 10 + num;
+    }
+
     public static IEnumerable<Token> Tokenize(string str) {
       List<Token> tokenList = new List<Token>();
       OperatorType type;
       int number=0;
+      bool numInProgress=false;
+
       Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
+
       foreach (char c in str) {
-        if (!TokenMethods.IsValidChar(c) && c != ' ') throw new TokenizationException("Encountered invalid character");
+        if (TokenMethods.CharTokenType(c) == TokenType.Invalid && c != ' ') throw new TokenizationException("Encountered invalid character, not number operator or space");
+
         if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
         { 
-//          OperatorToken token = new OperatorToken(type);
+          if (numInProgress) { // Unfinished number token
+            tokenList.Add(new NumberToken(number));
+            number = 0;
+            numInProgress=false;
+          }
           tokenList.Add(new OperatorToken(type));
           continue;
         }
         
         int num = (int) TokenMethods.GetNumber(c);
-//        NumberToken token = new NumberToken(num);
-        tokenList.Add(new NumberToken(num));
-        
+        if (num != -1) {
+        number = number * 10 + num;
+        numInProgress = true;
+        }
       }
+
+     if (numInProgress) // We have an outstanding number token
+       tokenList.Add(new NumberToken(number));
+
     Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
 
     return tokenList;
