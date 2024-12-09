@@ -3,7 +3,7 @@ using ACalc;
 
   public class Program {
     public static void Main(string[] args) {
-      var list = Token.Tokenize("3+4*2/(1-5)^2^3");
+      var list = TokenStream.Tokenize("3+4*2/(1-5)^2^3");
 //      var list = Token.Tokenize("30+44*-200/(10-5)^2^3");
 
       foreach (var token in list) {

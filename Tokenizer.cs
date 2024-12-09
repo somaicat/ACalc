@@ -86,64 +86,8 @@ namespace ACalc {
     private uint AddNumber(uint existing, uint num) {
       return existing * 10 + num;
     }
-
-    public static IEnumerable<Token> Tokenize(string str) {
-      List<Token> tokenList = new List<Token>();
-      OperatorType type;
-      int number=0;
-      bool numInProgress=false;
-      bool numNegate = false;
-      Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
-
-      foreach (char c in str) {
-        if (TokenMethods.CharTokenType(c) == TokenType.Invalid && c != ' ') throw new TokenizationException("Encountered invalid character, not number operator or space");
-
-        if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
-        { 
-          if (type == OperatorType.Subtract && !numInProgress) { // number is negative
-            numNegate = !numNegate;
-            continue;
-          }
-          if (numInProgress) { // Unfinished number token
-            if (numNegate) number = -number;
-            tokenList.Add(new NumberToken(number));
-            number = 0;
-            numInProgress=false;
-            numNegate=false;
-          }
-          tokenList.Add(new OperatorToken(type));
-          continue;
-        }
-        
-        int num = (int) TokenMethods.GetNumber(c);
-        if (num != -1) {
-        number = number * 10 + num;
-        numInProgress = true;
-        }
-      }
-
-     if (numInProgress) { // We have an outstanding number token
-       if (numNegate) number = -number;
-       tokenList.Add(new NumberToken(number));
-     }
-    Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
-
-    return tokenList;
-//    throw new TokenizationException("Method not implemented yet");
-    }
-
-/*    public override string ToString() 
-    {
-      if (this is NumberToken != null)
-      return string.Format("TKN: {0} {1}", this,(this as NumberToken).Number);
-      else if (this is OperatorToken != null)
-      return string.Format("TKN: {0} {1}", this,(this as OperatorToken).Operator);
-      
-      return "";
-    }
-*/
   }
-
+  
   public class NumberToken : Token {
     public int Number {get;set;}
     public NumberToken(int num) : base() 
@@ -165,6 +109,63 @@ namespace ACalc {
     }
   }
 
-  
+  public class TokenStream : IEnumerable<Token> {
+    public TokenStream() : base() {}
 
+    public static IEnumerable<Token> Tokenize(string str) {
+    List<Token> tokenList = new List<Token>();
+    OperatorType type;
+    int number=0;
+    bool numInProgress=false;
+    bool numNegate = false;
+    Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
+
+    foreach (char c in str) {
+      if (TokenMethods.CharTokenType(c) == TokenType.Invalid && c != ' ') throw new TokenizationException("Encountered invalid character, not number operator or space");
+
+      if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
+      { 
+        if (type == OperatorType.Subtract && !numInProgress) { // number is negative
+          numNegate = !numNegate;
+          continue;
+        }
+        if (numInProgress) { // Unfinished number token
+          if (numNegate) number = -number;
+          tokenList.Add(new NumberToken(number));
+          number = 0;
+          numInProgress=false;
+          numNegate=false;
+        }
+        tokenList.Add(new OperatorToken(type));
+        continue;
+      }
+        
+      int num = (int) TokenMethods.GetNumber(c);
+      if (num != -1) {
+      number = number * 10 + num;
+      numInProgress = true;
+      }
+    }
+
+   if (numInProgress) { // We have an outstanding number token
+     if (numNegate) number = -number;
+       tokenList.Add(new NumberToken(number));
+     }
+   Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
+
+   return tokenList;
+//    throw new TokenizationException("Method not implemented yet");
+    }
+
+/*    public override string ToString() 
+    {
+      if (this is NumberToken != null)
+      return string.Format("TKN: {0} {1}", this,(this as NumberToken).Number);
+      else if (this is OperatorToken != null)
+      return string.Format("TKN: {0} {1}", this,(this as OperatorToken).Operator);
+      
+      return "";
+    }
+*/
+  }
 }

@@ -1,12 +1,47 @@
 using System.Collections.Generic;
 
 namespace ACalc {
+  // TODO: Refactor to not static?
+  public class ShuntingYardException : Exception {
+    public ShuntingYardException() {}
+    public ShuntingYardException(string message) : base(message) {}
+    public ShuntingYardException(string message, Exception inner) : base(message, inner) {}
+  } 
 
-  static class ShuntingYardAlgorithm {
-    public static IEnumerable<Token> Evaluate(IEnumerable<Token> tokenStream) {
-      List<Token> output = new List<Token>();
-      Stack<OperatorToken> stack = new Stack<OperatorToken>();
+  class ShuntingYardAlgorithm {
+    private List<Token> output = new List<Token>();
+    private Stack<OperatorToken> = new Stack<OperatorToken>();
+    private TokenStream tokenStream = new Token[0];
+    private bool evaluated=true;
 
+    public TokenStream Output {get {if (evaluated) return output; else return new Token[0]; }}
+    public bool Evaluated {get { return evaluated; }}
+    public ShuntingYardAlgorithm() {
+      Reset();
+    }
+   /* private evaluated=false;
+    public Input { get; private set; }
+    public Output {
+      get 
+      { 
+	if (!this.evaluated) 
+	{
+	  Evaluate(tokenStream)
+	}
+	return output;
+	};
+*/
+
+    private static void FlushUntilPredicate(ref TokenStream tokenStream, List<Token> output, Stack<OperatorToken> stack, Predicate<Token> pToken) {
+
+    }
+    public void Reset() {
+      this.output = new List<Token>();
+      this.stack = new Stack<OperatorToken>();
+      this.tokenStream = new TokenStream();
+    }
+    private TokenStream Evaluate(TokenStream eval) {
+      this.tokenStream = eval;
       foreach (Token token in tokenStream) {
 
           System.Console.Write("Stack: ");
@@ -48,7 +83,7 @@ namespace ACalc {
           
             default:
 	    
-	     while (top != null && stack.Count > 0 && top.GetPrecedence() > opToken.GetPrecedence()) {
+	     while (top != null && stack.Count > 0 && top.GetPrecedence() >= opToken.GetPrecedence()) {
                output.Add(stack.Pop());
 	       if (stack.Count > 0) top = stack.Peek();
 	     }
