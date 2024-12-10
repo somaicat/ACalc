@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 namespace ACalc {
 
-  sealed class RPLEvaluator {
+  sealed class RPNEvaluator {
 
     public int Evaluate(TokenStream tokenStream) {
       Stack<NumberToken> numStack = new Stack<NumberToken>();

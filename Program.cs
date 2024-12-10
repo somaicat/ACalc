@@ -4,7 +4,7 @@ using ACalc;
   public class Program {
     public static void Main(string[] args) {
       ShuntingYardAlgorithm sya = new ShuntingYardAlgorithm();
-      RPLEvaluator rplEvaluator = new RPLEvaluator();
+      RPNEvaluator rplEvaluator = new RPNEvaluator();
       string inexpr;
 
       Console.Write("Enter expression: ");
