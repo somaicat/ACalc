@@ -13,9 +13,9 @@ namespace ACalc {
    // while(index < tokenStack.Length) {
     foreach (Token token in tokenStream) 
     {
-      System.Console.WriteLine("Processing {0}", token);
+   //   System.Console.WriteLine("Processing {0}", token);
       if (token is NumberToken) {
-	System.Console.WriteLine("Pushing {0}", (token as NumberToken).Number);
+//	System.Console.WriteLine("Pushing {0}", (token as NumberToken).Number);
 	numStack.Push(token as NumberToken);
       }
       else if (token is OperatorToken) 

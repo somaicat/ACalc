@@ -97,8 +97,8 @@ namespace ACalc {
           
             default:
 	    
-	     while (top != null && stack.Count > 0 && (
-	    //   top.GetPrecedence() > opToken.GetPrecedence()||
+	     while (top != null && stack.Count > 0 && top.Operator != OperatorType.OpenParenthesis && (
+	       top.GetPrecedence() > opToken.GetPrecedence()||
 	       top.GetPrecedence() == opToken.GetPrecedence() && opToken.GetAssociativity() == OperatorAssociativity.Left )) {
 	       System.Console.WriteLine("Executing loop, stack has contents of higher precedence, popping until not true");
                output.Add(stack.Pop());
