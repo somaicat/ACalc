@@ -98,15 +98,16 @@ namespace ACalc {
     }
     public static NumberToken Evaluate(OperatorType type, NumberToken left, NumberToken right) {
       NumberToken result = new NumberToken();
-      System.Console.WriteLine("Evaluating {0} {1} {2}", left.Number, type, right.Number);
+      System.Console.Write("Evaluating {0} {1} {2}", left.Number, type, right.Number);
       switch (type) {
-        case OperatorType.Exponent: result.Number = left.Number ^ right.Number; break;
+        case OperatorType.Exponent: result.Number = (int) Math.Pow(left.Number, right.Number); break;
         case OperatorType.Multiply: result.Number = left.Number * right.Number; break;
         case OperatorType.Divide: result.Number = left.Number / right.Number; break;
         case OperatorType.Add: result.Number = left.Number + right.Number; break;
         case OperatorType.Subtract: result.Number = left.Number - right.Number; break;
         default: throw new TokenizationException("Invalid Evaluation, bad OperatorType"); // TODO: Improve this
       }
+      System.Console.Write(" = {0}\n", result.Number);
       return result;
     }
   }
