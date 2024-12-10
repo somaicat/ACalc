@@ -89,11 +89,25 @@ namespace ACalc {
   }
   
   public class NumberToken : Token {
-    public int Number {get;set;}
+    public int Number {get;set;}=0;
+    public NumberToken() :base () {}
     public NumberToken(int num) : base() 
     {
       this.Type = TokenType.Number;
       this.Number = num; 
+    }
+    public static NumberToken Evaluate(OperatorType type, NumberToken left, NumberToken right) {
+      NumberToken result = new NumberToken();
+      System.Console.WriteLine("Evaluating {0} {1} {2}", left.Number, type, right.Number);
+      switch (type) {
+        case OperatorType.Exponent: result.Number = left.Number ^ right.Number; break;
+        case OperatorType.Multiply: result.Number = left.Number * right.Number; break;
+        case OperatorType.Divide: result.Number = left.Number / right.Number; break;
+        case OperatorType.Add: result.Number = left.Number + right.Number; break;
+        case OperatorType.Subtract: result.Number = left.Number - right.Number; break;
+        default: throw new TokenizationException("Invalid Evaluation, bad OperatorType"); // TODO: Improve this
+      }
+      return result;
     }
   }
 

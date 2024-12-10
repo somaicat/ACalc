@@ -25,7 +25,11 @@ using ACalc;
         Console.WriteLine("{0}: {1}",token,((OperatorToken) token).Operator);
         else
         Console.WriteLine("{0} (unknown token subclass?)");
+      
       }
+      Console.Write("\n\nEvaluating RPN Token Stream..\n");
+      RPLEvaluator rplEvaluator = new RPLEvaluator();
+      Console.Write("\n\nResult was {0}\n", rplEvaluator.Evaluate(list));
 //      System.Collections.Generic.List<int> nums = new System.Collections.Generic.List<int> {5,10,70};
 //      foreach (var n in nums) {
 //        System.Console.WriteLine("{0}", n);
