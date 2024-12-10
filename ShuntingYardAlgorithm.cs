@@ -83,13 +83,13 @@ namespace ACalc {
             case OperatorType.OpenParenthesis: stack.Push(opToken); continue;
             case OperatorType.CloseParenthesis:
 	      System.Console.WriteLine("Found close parenthesis, popping until open parenthesis");
-              while(stack.Count > 0) 
+              while(stack.Count > 0 && stack.Peek().Operator != OperatorType.OpenParenthesis) 
               {
 	
-		if (stack.Peek().Operator == OperatorType.OpenParenthesis) { stack.Pop(); continue; } 
+	//	if (stack.Peek().Operator == OperatorType.OpenParenthesis) { stack.Pop(); continue; } 
                 output.Add(stack.Pop());
               }
-            //  if (stack.Count > 0) {stack.Pop();
+             if (stack.Count > 0) {stack.Pop();}
 	     // System.Console.WriteLine("PopedP {0}",stack.Count);}
 //              if (stack.Count > 0 && stack.Peek().Operator == OperatorType.OpenParenthesis) stack.Pop();
 // insert check for not finding an open parenthesis 
