@@ -96,12 +96,10 @@ namespace ACalc {
     public TokenEvaluationException() {}
     public TokenEvaluationException(string message) : base(message) {}
     public TokenEvaluationException(string message, Exception inner) : base(message, inner) {}
-  }  
+  }
+
   public abstract class Token {
     public TokenType Type {get;set;}
-    private uint AddNumber(uint existing, uint num) {
-      return existing * 10 + num;
-    }
   }
   
   public class NumberToken : Token {
