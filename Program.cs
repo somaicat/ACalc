@@ -14,15 +14,15 @@ using ACalc;
 	  return;
 	}
         try {
-        TokenStream inTokenStream = TokenStream.Tokenize(inexpr); // "3+4*2/(1-5)^2^3"
+          TokenStream inTokenStream = TokenStream.Tokenize(inexpr); // "3+4*2/(1-5)^2^3"
 
-        Console.WriteLine("Input Token Stream: {0}", inTokenStream);
+          Console.WriteLine("Input Token Stream: {0}", inTokenStream);
 
-        TokenStream outTokenStream = sya.Evaluate(inTokenStream);
+          TokenStream outTokenStream = sya.Evaluate(inTokenStream);
 
-        Console.WriteLine("Output Token Stream: {0}", outTokenStream);
-        Console.Write("\n\nEvaluating RPN Token Stream..\n\n");
-        Console.WriteLine("Result was \"{0}\" = {1}\n", inexpr, rpnEvaluator.Evaluate(outTokenStream));
+          Console.WriteLine("Output Token Stream: {0}", outTokenStream);
+          Console.Write("\n\nEvaluating RPN Token Stream..\n\n");
+          Console.WriteLine("Result was \"{0}\" = {1}\n", inexpr, rpnEvaluator.Evaluate(outTokenStream));
 	}
 	catch (RPNEvaluationException ex) {
           Console.WriteLine("\nRPN Evaluation Failed, likely invalid input.");
