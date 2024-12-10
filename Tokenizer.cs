@@ -153,13 +153,13 @@ namespace ACalc {
     bool numInProgress=false;
     bool numNegate = false;
     Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
-
+    bool wasCloseParenthesis=false;
     foreach (char c in str) {
       if (TokenMethods.CharTokenType(c) == TokenType.Invalid && c != ' ') throw new TokenizationException("Encountered invalid character, not number operator or space");
 
       if ((type = TokenMethods.GetOperator(c)) != OperatorType.Invalid) // It's a valid operator token
       { 
-        if (type == OperatorType.Subtract && !numInProgress) { // number is negative
+        if (type == OperatorType.Subtract && !numInProgress && !wasCloseParenthesis) { // number is negative
           numNegate = !numNegate;
           continue;
         }
@@ -170,6 +170,8 @@ namespace ACalc {
           numInProgress=false;
           numNegate=false;
         }
+	if (type == OperatorType.CloseParenthesis) wasCloseParenthesis=true;
+	else wasCloseParenthesis=false;
         tokenList.Add(new OperatorToken(type));
         continue;
       }
