@@ -33,29 +33,41 @@ namespace ACalc {
 	};
 */
 
-    private static void FlushUntilPredicate(ref TokenStream tokenStream, List<Token> output, Stack<OperatorToken> stack, Predicate<Token> pToken) {
-
+    private static void FlushUntilPredicate(Predicate<Token> pToken) {
+     // while (pToken
+      throw new NotImplementedException();
     }
+
     public void Reset() {
       this.output = new TokenStream();
       this.stack = new Stack<OperatorToken>();
       this.tokenStream = new TokenStream();
     }
+
+    private void PrintStatus(Token token) {
+
+        System.Console.Write("\nStack: ");
+        foreach (OperatorToken to in stack) {System.Console.Write("{0} ", to.Operator);}
+	System.Console.Write("\nOutput: ");
+	foreach (Token lo in output) {
+	  if (lo is OperatorToken)
+	    System.Console.Write("{0} ", ((OperatorToken)lo).Operator);
+	  else 
+	    System.Console.Write("{0} ", ((NumberToken)lo).Number);
+	}
+
+      if (token is OperatorToken)
+        System.Console.WriteLine("\nEvaluating Token {0}", ((OperatorToken)token).Operator);
+      else 
+        System.Console.WriteLine("\nEvaluating Token {0}", ((NumberToken)token).Number);
+//	System.Console.Write("\n\n");
+    }
+
     public TokenStream Evaluate(TokenStream eval) {
+      Reset();
       this.tokenStream = eval;
       foreach (Token token in tokenStream) {
-
-          System.Console.Write("Stack: ");
-	  foreach (OperatorToken to in stack) {System.Console.Write("{0} ", to.Operator);}
-	  System.Console.Write("\nOutput: ");
-	  foreach (Token lo in output) {
-	    if (lo is OperatorToken)
-	    System.Console.Write("{0} ", ((OperatorToken)lo).Operator);
-	    else 
-	    System.Console.Write("{0} ", ((NumberToken)lo).Number);
-	  }
-	  System.Console.Write("\n\n");
-
+        PrintStatus(token);
 
         if (token is NumberToken) {
           output.Add(token);
@@ -69,7 +81,8 @@ namespace ACalc {
           if (stack.Count > 0) top = stack.Peek();
           switch(opToken.Operator) {
             case OperatorType.OpenParenthesis: stack.Push(opToken); continue;
-            case OperatorType.CloseParenthesis: 
+            case OperatorType.CloseParenthesis:
+	      System.Console.WriteLine("Found close parenthesis, popping until open parenthesis");
               while(stack.Count > 0) 
               {
 	
@@ -84,7 +97,8 @@ namespace ACalc {
           
             default:
 	    
-	     while (top != null && stack.Count > 0 && top.GetPrecedence() >= opToken.GetPrecedence()) {
+	     while (top != null && stack.Count > 0 && top.GetPrecedence() == opToken.GetPrecedence()) {
+	       System.Console.WriteLine("Executing loop, stack has contents of higher precedence, popping until not true");
                output.Add(stack.Pop());
 	       if (stack.Count > 0) top = stack.Peek();
 	     }
