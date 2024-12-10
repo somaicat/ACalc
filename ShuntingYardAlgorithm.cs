@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace ACalc {
@@ -9,12 +10,12 @@ namespace ACalc {
   } 
 
   class ShuntingYardAlgorithm {
-    private List<Token> output = new List<Token>();
-    private Stack<OperatorToken> = new Stack<OperatorToken>();
-    private TokenStream tokenStream = new Token[0];
+    private TokenStream output = new TokenStream();
+    private Stack<OperatorToken> stack = new Stack<OperatorToken>();
+    private TokenStream tokenStream = new TokenStream();
     private bool evaluated=true;
 
-    public TokenStream Output {get {if (evaluated) return output; else return new Token[0]; }}
+    public TokenStream Output {get {if (evaluated) return new TokenStream(output); else return new TokenStream(); }}
     public bool Evaluated {get { return evaluated; }}
     public ShuntingYardAlgorithm() {
       Reset();
@@ -36,11 +37,11 @@ namespace ACalc {
 
     }
     public void Reset() {
-      this.output = new List<Token>();
+      this.output = new TokenStream();
       this.stack = new Stack<OperatorToken>();
       this.tokenStream = new TokenStream();
     }
-    private TokenStream Evaluate(TokenStream eval) {
+    public TokenStream Evaluate(TokenStream eval) {
       this.tokenStream = eval;
       foreach (Token token in tokenStream) {
 

@@ -109,11 +109,12 @@ namespace ACalc {
     }
   }
 
-  public class TokenStream : IEnumerable<Token> {
+  public class TokenStream : List<Token> {
     public TokenStream() : base() {}
+    public TokenStream(TokenStream stream) : base(stream) {}
 
-    public static IEnumerable<Token> Tokenize(string str) {
-    List<Token> tokenList = new List<Token>();
+    public static TokenStream Tokenize(string str) {
+    TokenStream tokenList = new TokenStream();
     OperatorType type;
     int number=0;
     bool numInProgress=false;

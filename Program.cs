@@ -15,7 +15,8 @@ using ACalc;
         Console.WriteLine("{0} (unknown token subclass?)");
       }
 //      System.Collections.Generic.List<int> nums = new System.Collections.Generic.List<int> {5,10,70};
-        list = ShuntingYardAlgorithm.Evaluate(list);
+        ShuntingYardAlgorithm sya = new ShuntingYardAlgorithm();
+        list = sya.Evaluate(list);
       foreach (var token in list) {
         if (token is NumberToken)
         Console.WriteLine("{0}: {1}",token, ((NumberToken) token).Number);
