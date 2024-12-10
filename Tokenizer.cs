@@ -20,6 +20,12 @@ namespace ACalc {
     Invalid
   }
 
+  public enum OperatorAssociativity {
+    Left,
+    Right, 
+    Unknown
+  }
+
   static class TokenMethods {
     public static OperatorType GetOperator(char c) {
       switch (c) 
@@ -73,6 +79,13 @@ namespace ACalc {
       }
       return -1;
     }
+
+    public static OperatorAssociativity GetAssociativity(this OperatorType type) {
+      switch (type) {
+	case OperatorType.Exponent: return OperatorAssociativity.Right;
+	default: return OperatorAssociativity.Left; // TODO: Fix this hack!
+      }
+    }
   }
 
   public class TokenizationException : Exception {
@@ -119,8 +132,13 @@ namespace ACalc {
       this.Operator = type; 
       this.Type = TokenType.Operator;
     }
+
+    // Make these an interface maybe?
     public int GetPrecedence() {
       return this.Operator.GetPrecedence();
+    }
+    public OperatorAssociativity GetAssociativity() {
+      return this.Operator.GetAssociativity();
     }
   }
 
