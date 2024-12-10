@@ -30,7 +30,7 @@ namespace ACalc {
       Reset();
       this.tokenStream = eval;
       foreach (Token token in tokenStream) {
-        PrintStatus(token);
+      //  PrintStatus(token);
 
         if (token is NumberToken) {
           output.Add(token);
