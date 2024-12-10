@@ -110,8 +110,7 @@ namespace ACalc {
       this.Number = num; 
     }
     public static NumberToken Evaluate(OperatorType type, NumberToken left, NumberToken right) {
-      NumberToken result = new NumberToken();
-      System.Console.Write("Evaluating {0} {1} {2}", left.Number, type, right.Number);
+      NumberToken result = new NumberToken(); 
       switch (type) {
         case OperatorType.Exponent: result.Number = (int) Math.Pow(left.Number, right.Number); break;
         case OperatorType.Multiply: result.Number = left.Number * right.Number; break;
@@ -123,6 +122,10 @@ namespace ACalc {
       System.Console.Write(" = {0}\n", result.Number);
       return result;
     }
+    public override string ToString() {
+      return "["+this.Number.ToString()+"]";
+    }
+
   }
 
   public class OperatorToken : Token {
@@ -140,9 +143,12 @@ namespace ACalc {
     public OperatorAssociativity GetAssociativity() {
       return this.Operator.GetAssociativity();
     }
+    public override string ToString() {
+      return "[" + this.Operator.ToString() + "]";
+    }
   }
 
-  public class TokenStream : List<Token> {
+  public sealed class TokenStream : List<Token> {
     public TokenStream() : base() {}
     public TokenStream(TokenStream stream) : base(stream) {}
 
@@ -152,7 +158,6 @@ namespace ACalc {
     int number=0;
     bool numInProgress=false;
     bool numNegate = false;
-    Console.WriteLine("Running prototype tokenizer on \"{0}\"", str);
     bool wasCloseParenthesis=false;
     foreach (char c in str) {
       if (TokenMethods.CharTokenType(c) == TokenType.Invalid && c != ' ') throw new TokenizationException("Encountered invalid character, not number operator or space");
@@ -187,21 +192,20 @@ namespace ACalc {
      if (numNegate) number = -number;
        tokenList.Add(new NumberToken(number));
      }
-   Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
+ //  Console.WriteLine("{0} {1}", tokenList,tokenList.Count);
 
    return tokenList;
-//    throw new TokenizationException("Method not implemented yet");
     }
 
-/*    public override string ToString() 
+    public override string ToString() 
     {
-      if (this is NumberToken != null)
-      return string.Format("TKN: {0} {1}", this,(this as NumberToken).Number);
-      else if (this is OperatorToken != null)
-      return string.Format("TKN: {0} {1}", this,(this as OperatorToken).Operator);
-      
-      return "";
+      string result = "";
+      foreach (Token token in this) {
+        result += token;
+      }
+      return result;
     }
-*/
+
   }
 }
+

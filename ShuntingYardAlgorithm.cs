@@ -42,7 +42,7 @@ namespace ACalc {
           switch(opToken.Operator) {
             case OperatorType.OpenParenthesis: stack.Push(opToken); continue;
             case OperatorType.CloseParenthesis:
-	      System.Console.WriteLine("Found close parenthesis, popping until open parenthesis");
+	     // System.Console.WriteLine("Found close parenthesis, popping until open parenthesis");
               while(stack.Count > 0 && stack.Peek().Operator != OperatorType.OpenParenthesis) 
               {
                 output.Add(stack.Pop());
@@ -55,7 +55,7 @@ namespace ACalc {
 	     while (top != null && stack.Count > 0 && top.Operator != OperatorType.OpenParenthesis && (
 	       top.GetPrecedence() > opToken.GetPrecedence()||
 	       top.GetPrecedence() == opToken.GetPrecedence() && opToken.GetAssociativity() == OperatorAssociativity.Left )) {
-	       System.Console.WriteLine("Executing loop, stack has contents of higher precedence, popping until not true");
+	   //    System.Console.WriteLine("Executing loop, stack has contents of higher precedence, popping until not true");
                output.Add(stack.Pop());
 	       if (stack.Count > 0) top = stack.Peek();
 	     }
@@ -72,21 +72,13 @@ namespace ACalc {
     }
 
   private void PrintStatus(Token token) {
+    System.Console.WriteLine("\nEvaluated Token {0}", token);
 
     System.Console.Write("\nStack: ");
-    foreach (OperatorToken to in stack) {System.Console.Write("{0} ", to.Operator);}
-      System.Console.Write("\nOutput: ");
-      foreach (Token lo in output) {
-	if (lo is OperatorToken)
-	  System.Console.Write("{0} ", ((OperatorToken)lo).Operator);
-	else 
-	  System.Console.Write("{0} ", ((NumberToken)lo).Number);
-      }
-
-    if (token is OperatorToken)
-      System.Console.WriteLine("\nEvaluating Token {0}", ((OperatorToken)token).Operator);
-    else 
-      System.Console.WriteLine("\nEvaluating Token {0}", ((NumberToken)token).Number);
+    foreach (OperatorToken to in stack) {
+      System.Console.Write("{0} ", to);  
+    }
+    System.Console.Write("\nOutput: {0}\n",output);
   }
 
   private TokenStream output = new TokenStream();
