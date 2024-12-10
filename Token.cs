@@ -92,7 +92,11 @@ namespace ACalc {
     public TokenizationException(string message) : base(message) {}
     public TokenizationException(string message, Exception inner) : base(message, inner) {}
   } 
-  
+  public class TokenEvaluationException : Exception {
+    public TokenEvaluationException() {}
+    public TokenEvaluationException(string message) : base(message) {}
+    public TokenEvaluationException(string message, Exception inner) : base(message, inner) {}
+  }  
   public abstract class Token {
     public TokenType Type {get;set;}
     private uint AddNumber(uint existing, uint num) {
@@ -116,7 +120,7 @@ namespace ACalc {
         case OperatorType.Divide: result.Number = left.Number / right.Number; break;
         case OperatorType.Add: result.Number = left.Number + right.Number; break;
         case OperatorType.Subtract: result.Number = left.Number - right.Number; break;
-        default: throw new TokenizationException("Invalid Evaluation, bad OperatorType"); // TODO: Improve this
+        default: throw new TokenEvaluationException("Bad OperatorType \"" + type + "\""); // TODO: Improve this
       }
       System.Console.Write(" = {0}\n", result.Number);
       return result;
